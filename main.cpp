@@ -27,12 +27,17 @@ void count_characters(int line_number, int ascii_table[], std::istream &is)
     }
 }
 
-bool pair_compare(std::pair< char, int > &p1, std::pair< char, int > &p2)
+struct output_pair_t {
+    char character;
+    int count;
+};
+
+bool pair_compare(output_pair_t &p1, output_pair_t &p2)
 {
-    if (p1.second == p2.second)
-        return p1.first < p2.first;
+    if (p1.count == p2.count)
+        return p1.character < p2.character;
     else
-        return p1.second > p2.second;
+        return p1.count > p2.count;
 }
 
 bool cryptanalysis(std::istream &is, std::ostream &os)
@@ -47,18 +52,21 @@ bool cryptanalysis(std::istream &is, std::ostream &os)
     int ascii_table[26] = { 0 };
     count_characters(line_number, ascii_table, is);
 
-    std::vector< std::pair< char, int > > pairs_vec;
+    std::vector< output_pair_t > pairs_vec;
+    output_pair_t output_pair;
 
     for (int i = 0; i < 26; i++) {
         if (ascii_table[i] != 0) {
-            pairs_vec.push_back(std::make_pair(char(ASCII_UPPERCASE_A + i), ascii_table[i]));
+            output_pair.character = char(ASCII_UPPERCASE_A + i);
+            output_pair.count = ascii_table[i];
+            pairs_vec.push_back(output_pair);
         }
     }
 
     std::sort(pairs_vec.begin(), pairs_vec.end(), pair_compare);
 
-    for (std::vector< std::pair< char, int > >::iterator it = pairs_vec.begin(); it != pairs_vec.end(); ++it) {
-        os << it->first << " " << it->second << std::endl;
+    for (std::vector< output_pair_t >::iterator it = pairs_vec.begin(); it != pairs_vec.end(); ++it) {
+        os << it->character << " " << it->count << std::endl;
     }
 
     return true;
