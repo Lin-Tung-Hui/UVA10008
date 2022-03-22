@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include "main.cpp"
 
 TEST(cryptanalysis, test_1)
